@@ -1,0 +1,12 @@
+.createPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 500px;
+    padding-bottom: 200px;
+    height: 92vh;
+    background-color: rgb(237, 255, 252);
+    overflow: scroll;
+}

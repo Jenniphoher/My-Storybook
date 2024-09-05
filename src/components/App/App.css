@@ -1,3 +1,9 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
 html,
 body,
 #react-root {
@@ -5,8 +11,17 @@ body,
 }
 
 body {
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0px;
+  background-color: rgba(16, 120, 105, 1);
+}
+
+.content {
+  flex: 1;
 }
 
 img {
@@ -110,3 +125,8 @@ input {
   margin: 5px;
   margin-bottom: 10px;
 }
+
+img {
+  height: 100vh;
+}
+

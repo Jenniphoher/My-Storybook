@@ -1,0 +1,41 @@
+.storyFullScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 700px;
+    padding-bottom: 200px;
+    height: 92vh;
+    background-color: rgb(237, 255, 252);
+    overflow: scroll;
+}
+
+.storyFullScreenGallery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 50px;
+}
+
+.storyFullScreenSpan {
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+}
+
+.storyFullScreenImage {
+    height: 100vh;
+}
+
+.storyFullScreenButtons {}
+
+.storyFullScreenDelete, .storyFullScreenClose {
+    height: 50px;
+    width: 100px;
+    margin: 60px 90px;
+    border-radius: 3px;
+    font-size: 25px;
+}
+
