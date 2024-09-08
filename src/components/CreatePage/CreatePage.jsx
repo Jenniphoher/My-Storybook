@@ -107,7 +107,8 @@ function CreatePage() {
                                     onDragEnd={handleDragEnd} />
                         )
                     })}
-
+                {/* </Layer>
+                <Layer> */}
                     {showInput && (
                         <Group id='textGroup'
                             x={textPosition.x} y={textPosition.y}
@@ -116,16 +117,25 @@ function CreatePage() {
                             draggable
                             onDragStart={handleDragStart}
                             onDragEnd={handleDragEnd} >
-                            <Html>
+                            <Html >
                                 <input className="createStageText"
                                         type='text'
                                         placeholder='Write your story here...'
                                         value={text}
                                         onChange={e => setText(e.target.value)}
+                                        style={{
+                                            width: '200px',
+                                            height: '30px',
+                                            fontSize: '16px',
+                                            padding: '5px',
+                                            border: '1px solid black',
+                                            borderRadius: '5px',
+                                        }}
                                         // draggable
                                         // onDragStart={handleDragStart}
                                         />
                             </Html>
+                            
                         </Group>
                     )}
 
@@ -176,3 +186,11 @@ function CreatePage() {
 }
 
 export default CreatePage;
+
+{/* <Rect
+                                width={textPosition.width}
+                                height={textPosition.height}
+                                fill="white"
+                                stroke="black"
+                                strokeWidth={1}
+                            /> */}
