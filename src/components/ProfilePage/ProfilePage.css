@@ -1,0 +1,25 @@
+.profilePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 500px;
+    padding-bottom: 200px;
+    height: 92vh;
+    background-color: rgb(237, 255, 252);
+    overflow: scroll;
+}
+
+.profilePostGallery {
+    margin: 130px;
+}
+
+.profilePosts {
+    margin-top: 80px;
+}
+
+.profileImages {
+    height: 20vh;
+    margin: 0px 20px;
+}

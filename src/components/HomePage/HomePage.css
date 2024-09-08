@@ -1,0 +1,21 @@
+.homePage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 1000px;
+    padding-bottom: 200px;
+    height: 92vh;
+    background-color: rgb(237, 255, 252);
+    overflow: scroll;
+}
+
+.h2Home {
+    margin-bottom: 100px;
+}
+
+h4 {
+    margin: 10px auto;
+}
