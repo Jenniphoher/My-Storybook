@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import './ImagePage.css'
@@ -13,6 +13,7 @@ function ImagePage() {
     const postId = params.id;
     const [title, setTitle] = useState('');
     const [file, setFile] = useState('')
+    const fileRef = useRef(null);
 
     useEffect(() => {
         dispatch({ type: 'FETCH_GALLERY' })
@@ -27,7 +28,9 @@ function ImagePage() {
                 file: file
             }
         })
-
+        setFile(null);
+        fileRef.current.value = null;
+        setTitle('');
     }
 
     return (
@@ -38,6 +41,8 @@ function ImagePage() {
                     onSubmit={addPhoto} >
                 <input type='file' 
                         // multiple
+                        // value={file}
+                        ref={fileRef}
                         onChange={e => setFile(e.target.files[0])}
                         />
                 <input type='text'

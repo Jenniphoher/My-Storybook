@@ -130,23 +130,6 @@ router.put('/photo/:id', (req, res) => {
 
 
 
-router.delete('/story/:id', (req, res) => {
-    const storyId = req.params.id
-
-    const sqlText = `
-        DELETE FROM "post"
-            WHERE "id" = $1;
-    `
-    pool.query(sqlText, [storyId])
-    .then((result) => {
-        console.log('story deleted in db');
-        res.sendStatus(200)
-    }) .catch((err) => {
-        console.log('server error deleting photo', err);
-        res.sendStatus(500)
-    })
-})
-
 router.delete('/:id', (req, res) => {
     const storyId = req.params.id
 

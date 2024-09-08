@@ -22,6 +22,10 @@ function ProfilePage() {
         <div className="profilePage">
             <h2>Profile</h2>
 
+            {/* <button onClick={() => {
+                history.push(`/image_page/${userId}`)
+            }}>My Photos</button> */}
+
             <div className="profilePostGallery">
                 {!post ? null : post.map((item) => {
                     return (
