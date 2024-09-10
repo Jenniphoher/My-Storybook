@@ -21,9 +21,9 @@ function* addPhoto(action) {
         const data = new FormData();
         data.append('file', file);
         data.append('title', title)
-        console.log('file is:', file);
-        console.log('title is:', title);
-        console.log('This is data:', data);
+        // console.log('file is:', file);
+        // console.log('title is:', title);
+        // console.log('This is data:', data);
         yield axios.post('/api/upload', data);
         yield put({ type: 'FETCH_GALLERY' })
     } catch (error) {
@@ -49,7 +49,7 @@ function* addChosenPhoto(action) {
     const imgId = action.payload.img_id;
     const postId = action.payload.post_id;
     try {
-        console.log('payload:', action.payload);
+        // console.log('payload:', action.payload);
         yield axios.put(`/api/post/photo/${postId}`, {img_id: imgId})
         yield put({
             type: 'FETCH_CREATED_POST',

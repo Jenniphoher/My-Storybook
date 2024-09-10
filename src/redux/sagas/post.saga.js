@@ -5,9 +5,9 @@ import { put, takeLatest } from 'redux-saga/effects';
 function* createPost(action) {
     const userId = action.payload.user_id;
     try {
-        console.log('history for create post is:', action.payload);
+        // console.log('history for create post is:', action.payload);
         const response = yield axios.post('/api/post')
-        console.log('create post response data:', response.data);
+        // console.log('create post response data:', response.data);
         const postId = response.data.id
         // yield put({
         //     type: 'FETCH_CREATED_POST',
@@ -20,12 +20,15 @@ function* createPost(action) {
 }
 
 function* fetchCreatedPost(action) {
+    const postId = action.payload.post_id;
+    const getPhoto = action.payload.getPhoto;
     try {
-        const response = yield axios.get(`/api/post/${action.payload}`)
+        const response = yield axios.get(`/api/post/${postId}`)
         yield put({
             type: 'SET_POST',
             payload: response.data
         })
+        getPhoto();
     } catch (error) {
         console.log('Error getting created post', error)
     }
@@ -97,12 +100,6 @@ function* deleteStory(action) {
     }
 
 }
-
-// ============ UPDATES ON IMG POSITION AND TEXT
-
-
-
-// send updates on text to 'post'
 
 
 function* postSaga() {
