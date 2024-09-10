@@ -1,8 +1,10 @@
 const imgUpdateReducer = (state = [], action) => {
     switch (action.type) {
-        case 'SET_POSITION':
+        case 'UPDATE_IMAGE_CHANGE':
             return action.payload;
-        case 'UNSET_GALLERY':
+        case 'SET_TEXT':
+            return action.payload;
+        case 'UNSET_IMAGE_CHANGE':
             return [];
         default:
             return state;

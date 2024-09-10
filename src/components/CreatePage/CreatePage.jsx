@@ -7,34 +7,43 @@ import NavBar from '../NavBar/NavBar';
 import './CreatePage.css'
 
 function CreatePage() {
-    const transformerRef = useRef(null);
+    const textTransformerRef = useRef(null);
+    const imgTransformerRef = useRef(null);
     const groupRef = useRef(null);
+    const imgRef = useRef(null);
     const post = useSelector(store => store.post)
     const history = useHistory();
     const dispatch = useDispatch();
     const params = useParams();
     const postId = params.id
+
     const [text, setText] = useState('');
-    const [isSelected, setIsSelected] = useState(false);
+    const [imgSelected, setImgSelected] = useState(false);
+    const [textSelected, setTextSelected] = useState(false);
     const [showInput, setShowInput] = useState(false);
     const [image, setImage] = useState('');
     const [imgUrl, setImgUrl] = useState('')
-    const [imgPosition, setImgPosition] = useState('');
-    const [textPosition, setTextPosition] = useState('');
+    const [imgChange, setImgChange] = useState({x:200, y:150, width: 400, height: 480});
+    // const [imgSize, setImgSize] = useState({width: 400, height: 480});
+    const [textSize, setTextSize] = useState('');
 
     useEffect(() => {
         fetchCreatedPost()
-        getPhoto()
-        if (isSelected && showInput && transformerRef.current && groupRef.current) { 
-            transformerRef.current.nodes([groupRef.current]); 
-            transformerRef.current.getLayer().batchDraw(); 
+
+        if (imgSelected && imgTransformerRef.current && imgRef.current) { 
+            imgTransformerRef.current.nodes([imgRef.current]); 
+            imgTransformerRef.current.getLayer().batchDraw(); 
         }
-    }, [isSelected, showInput]);
+        if (textSelected && showInput && textTransformerRef.current && groupRef.current) { 
+            textTransformerRef.current.nodes([groupRef.current]); 
+            textTransformerRef.current.getLayer().batchDraw(); 
+        }
+    }, [postId, imgSelected, showInput]);
 
     const fetchCreatedPost = () => {
         dispatch({
             type: 'FETCH_CREATED_POST',
-            payload: postId
+            payload: { post_id: postId, getPhoto: getPhoto }
         })
     }
 
@@ -53,31 +62,33 @@ function CreatePage() {
         }
     }
 
-    const handleDragStart = (e) => {
-        const id = e.target.id();
-        setIsSelected( id === 'textGroup')
-    }
-
     const handleDragEnd = (e) => {
         const currentPosition = {
+            ...imgChange,
             x: e.target.x(),
             y: e.target.y(),
-            id: e.target.id()
         }
+        setImgChange(currentPosition)
+        dispatch({
+            type: 'UPDATE_IMAGE_POSITION',
+            payload: currentPosition
+        })
+    }
 
-        if (e.target.id() === 'textGroup') {
-            setTextPosition(currentPosition);
-            dispatch({
-                type: 'UPDATE_TEXT_POSITION',
-                payload: currentPosition
-            })
-        } else {
-            setImgPosition(currentPosition)
-            dispatch({
-                type: 'UPDATE_IMAGE_POSITION',
-                payload: currentPosition
-            })
-        }
+    const handleTransform = (e) => {
+        const node = imgRef.current;
+        const scaleX = node.scaleX();
+        const scaleY = node.scaleY();
+
+        node.scaleX(1);
+        node.scaleY(1);
+
+        setImgChange({
+            x: node.x(),
+            y: node.y(),
+            width: Math.max(node.width() * scaleX, 20),
+            height: Math.max(node.height() * scaleY, 20)
+        })
     }
 
 
@@ -87,36 +98,50 @@ function CreatePage() {
 
             <Stage className="createStage"
                     height={800}
-                    width={1000}
+                    width={800}
                     onClick={(e) => { 
                         if (e.target === e.target.getStage()) { 
-                            setIsSelected(false); 
+                            setImgSelected(false); 
+                            setTextSelected(false)
                         }}}
                     >
                 <Layer className="createStageLayer">
-                    {!post ? '' : post.map((item) => {
+                    {post.map((item) => {
                         return (
                             <Image className="createStageImage"
+                                    ref={imgRef}
                                     key={item.id}
                                     id='{item.id}'
                                     image={image} 
-                                    width={400} height={480} 
-                                    x={imgPosition.x} y={imgPosition.y}
+                                    width={imgChange.width} height={imgChange.height} 
+                                    x={imgChange.x} y={imgChange.y}
                                     draggable
-                                    onDragStart={handleDragStart}
-                                    onDragEnd={handleDragEnd} />
+                                    // onDragStart={handleDragStart}
+                                    onDragEnd={handleDragEnd}
+                                    onClick={() => setImgSelected(true)} 
+                                    onTransformEnd={handleTransform} />
                         )
                     })}
-                {/* </Layer>
-                <Layer> */}
+                    {imgSelected && (
+                        <Transformer
+                            ref={imgTransformerRef}
+                            flipEnabled={false}
+                            boundBoxFunc={(oldBox, newBox) => {
+                                if (newBox.width < 20 || newBox.height < 20) {
+                                    return oldBox;
+                                }
+                                return newBox;
+                            }} /> 
+                    )}
+
+                </ Layer>
+                <Layer>
                     {showInput && (
                         <Group id='textGroup'
-                            x={textPosition.x} y={textPosition.y}
+                            x={300} y={700}
                             ref={groupRef}
-                            onClick={() => setIsSelected(true)} 
-                            draggable
-                            onDragStart={handleDragStart}
-                            onDragEnd={handleDragEnd} >
+                            onClick={() => setTextSelected(true)} 
+                            >
                             <Html >
                                 <input className="createStageText"
                                         type='text'
@@ -131,18 +156,16 @@ function CreatePage() {
                                             border: '1px solid black',
                                             borderRadius: '5px',
                                         }}
-                                        // draggable
-                                        // onDragStart={handleDragStart}
                                         />
                             </Html>
                             
                         </Group>
                     )}
 
-                    {isSelected && showInput && (
+                    {textSelected && showInput && (
                         <Transformer
                             ref={transformerRef}
-                            // enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
+                            flipEnabled={false}
                             boundBoxFunc={(oldBox, newBox) => {
                                 if (newBox.width < 20 || newBox.height < 20) {
                                     return oldBox;
@@ -163,9 +186,9 @@ function CreatePage() {
                 dispatch({
                     type: 'UPDATE_POST_POSITION_SIZE_TEXT',
                     payload: {
-                        imgPosition: imgPosition,
-                        textPosition: textPosition,
-                        text: text
+                        imgChange: imgChange,
+                        text: text,
+                        postId: postId
                     }
                 })
                 history.push('/home_page')
@@ -187,10 +210,3 @@ function CreatePage() {
 
 export default CreatePage;
 
-{/* <Rect
-                                width={textPosition.width}
-                                height={textPosition.height}
-                                fill="white"
-                                stroke="black"
-                                strokeWidth={1}
-                            /> */}

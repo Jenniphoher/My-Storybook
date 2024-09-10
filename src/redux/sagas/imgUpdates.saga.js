@@ -74,15 +74,21 @@ import { put, takeLatest } from 'redux-saga/effects';
 
 // ============ UPDATES ON IMG POSITION AND TEXT
 
-function* updateImagePosition(action) {
+function* updateImgTextPost(action) {
+    console.log('payload in update img:', action.payload);
+    const postId = action.payload.postId
     try {
-        
+        const response = yield axios.put(`/api/post/img_text/${postId}`, action.payload)
+        // yield put({
+        //     type: 'UPDATE_IMAGE_CHANGE',
+        //     payload: action.payload
+        // })
     } catch (error) {
-        
+        console.log("Error uploading photo:", error);
     }
 }
 
-function* updateTextPosition(action) {
+function* updateText(action) {
     try {
         
     } catch (error) {
@@ -94,8 +100,8 @@ function* updateTextPosition(action) {
 
 
 function* imgUpdatesSaga() {
-yield takeLatest('UPDATE_IMAGE_POSITION', updateImagePosition)
-yield takeLatest('UPDATE_TEXT_POSITION', updateTextPosition)
+yield takeLatest('UPDATE_POST_POSITION_SIZE_TEXT', updateImgTextPost)
+yield takeLatest('UPDATE_POST_POSITION_SIZE_TEXT', updateText)
 }
 
 export default imgUpdatesSaga;
