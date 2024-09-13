@@ -1,20 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import './ImagePage.css'
+import { useHistory, useParams, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import { Card, TextField } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Divider from '@mui/material/Divider';
+import '../ImagePage/ImagePage.css'
 import NavBar from '../NavBar/NavBar'
 
-function ImagePage() {
+function ProfileUserGallery() {
     const history = useHistory();
     const dispatch = useDispatch();
+    const location = useLocation();
     const gallery = useSelector(store => store.gallery);
     const user = useSelector(store => store.user);
-    const { id, page } = useParams();
-    const storybookId = id;
-    const pageNum = page;
+    const params = useParams();
     const [title, setTitle] = useState('');
     const [file, setFile] = useState('')
     const fileRef = useRef(null);
@@ -80,34 +79,44 @@ function ImagePage() {
                     {gallery && gallery.map((photo) => {
                         return (
                         <span className='galleryCropper' key={photo.id} >
-                        <img className='photoImages'
-                            src={photo.img_url} 
-                            onClick={() => {
-                                dispatch({
-                                    type: 'ADD_CHOSEN_PHOTO',
-                                    payload: {
-                                        imgId: photo.id,
-                                        storybookId: storybookId,
-                                        pageNum: pageNum
+                            <img className='photoImages'
+                                src={photo.img_url} 
+                                onClick={() => {
+                                    if (location.pathname === `/profile_photo/${user.id}`) {
+                                        console.log('location:', location.pathname);
+                                        dispatch({
+                                            type: 'ADD_PROFILE_PICTURE',
+                                            payload: {
+                                                imgUrl: photo.img_url,
+                                                userId: user.id,
+                                                history: history
+                                            }
+                                        })
+                                    } else if (location.pathname === `/profile_cover/${user.id}`) {
+                                        console.log('location:', location.pathname);
+                                        dispatch({
+                                            type: 'ADD_PROFILE_COVER',
+                                            payload: {
+                                                imgUrl: photo.img_url,
+                                                userId: user.id,
+                                                history: history
+                                            }
+                                        })
                                     }
-                                })
-                                history.push(`/create_page/${storybookId}/${pageNum}`)
-                            }}
-                            />
+                                    
+                                }}
+                                />
                         </span>
-            
                         )
                     })}
                 </div>
             </div>
-
+            <NavBar />
         </div>
     )
 
 }
 
-
-
-export default ImagePage;
+export default ProfileUserGallery;
 
 {/* <h4 className='h4ImageGallery'>{photo.title}</h4> */}

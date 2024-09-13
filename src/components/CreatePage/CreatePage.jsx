@@ -1,65 +1,159 @@
-import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, useParams, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
 import { Stage, Layer, Image, Text, Transformer, Rect, Group } from 'react-konva';
 import { Html } from 'react-konva-utils';
-import NavBar from '../NavBar/NavBar';
+import useImage from 'use-image';
 import './CreatePage.css'
 
-function CreatePage() {
-    const textTransformerRef = useRef(null);
+function ImageUrl({imgUrl, handleDragEnd, handleTransform, imgChange, imgRef, getPhoto, text, handleText, groupRef}) {
     const imgTransformerRef = useRef(null);
-    const groupRef = useRef(null);
-    const imgRef = useRef(null);
-    const post = useSelector(store => store.post)
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const params = useParams();
-    const postId = params.id
-
-    const [text, setText] = useState('');
     const [imgSelected, setImgSelected] = useState(false);
-    const [textSelected, setTextSelected] = useState(false);
-    const [showInput, setShowInput] = useState(false);
-    const [image, setImage] = useState('');
-    const [imgUrl, setImgUrl] = useState('')
-    const [imgChange, setImgChange] = useState({x:200, y:150, width: 400, height: 480});
-    // const [imgSize, setImgSize] = useState({width: 400, height: 480});
-    const [textSize, setTextSize] = useState('');
+    const [image, imageStatus] = useImage(imgUrl);
+
 
     useEffect(() => {
-        fetchCreatedPost()
-
-        if (imgSelected && imgTransformerRef.current && imgRef.current) { 
+        getPhoto()
+        if (imgSelected && imgUrl && imgTransformerRef.current && imgRef.current) { 
             imgTransformerRef.current.nodes([imgRef.current]); 
             imgTransformerRef.current.getLayer().batchDraw(); 
         }
-        if (textSelected && showInput && textTransformerRef.current && groupRef.current) { 
-            textTransformerRef.current.nodes([groupRef.current]); 
-            textTransformerRef.current.getLayer().batchDraw(); 
-        }
-    }, [postId, imgSelected, showInput]);
+    }, [imgSelected, imgUrl])
 
-    const fetchCreatedPost = () => {
+    useEffect(() => {
+
+    }, [])
+
+
+    return (
+        <Stage className="createStage"
+        height={950} width={1200}
+        onClick={(e) => { 
+            if (e.target === e.target.getStage()) { 
+                setImgSelected(false); 
+                setTextSelected(false)
+            }}}
+        >
+        <Layer className="createStageLayer">
+            <Image className="createStageImage"
+                    ref={imgRef}
+                    image={image} 
+                    width={imgChange.width} height={imgChange.height} 
+                    x={imgChange.x} y={imgChange.y}
+                    draggable
+                    onDragEnd={handleDragEnd}
+                    onClick={() => setImgSelected(true)} 
+                    onTransformEnd={handleTransform} />
+
+            {imgSelected && (
+                <Transformer
+                    ref={imgTransformerRef}
+                    flipEnabled={false}
+                    boundBoxFunc={(oldBox, newBox) => {
+                        if (newBox.width < 20 || newBox.height < 20) {
+                            return oldBox;
+                        }
+                        return newBox;
+                    }} /> 
+            )}
+        </ Layer>
+                        <Layer>
+                        <Group id='textGroup'
+                            x={250} y={800}
+                            ref={groupRef}
+                            // onClick={() => setTextSelected(true)} 
+                            >
+                            <Html >
+                                <input className="createStageText"
+                                        type='text'
+                                        placeholder='Write your story here...'
+                                        value={text}
+                                        onChange={handleText}
+                                        style={{
+                                            width: '700px',
+                                            height: '60px',
+                                            fontSize: '28px',
+                                            padding: '5px',
+                                            border: '1px solid black',
+                                            borderRadius: '5px',
+                                        }}
+                                        />
+                            </Html>
+                        </Group>
+                    </Layer>
+                </Stage>
+    )
+
+}
+
+function CreatePage() {
+    // const textTransformerRef = useRef(null);
+    const groupRef = useRef(null);
+    const imgRef = useRef(null);
+    const storybook = useSelector(store => store.storybook)
+    const pages = useSelector(store => store.pages);
+    const pageNumStore = useSelector(store => store.pageNum);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const { id, page } = useParams();
+    const storybookId = id;
+    const pageNum = page;
+
+    
+    // const [textSelected, setTextSelected] = useState(false);
+    const [imgUrl, setImgUrl] = useState(null)
+    const [text, setText] = useState('');
+    const [imgChange, setImgChange] = useState({x:200, y:150, width: 400, height: 480});
+    // const [textSize, setTextSize] = useState('');
+
+    useEffect(() => {
         dispatch({
-            type: 'FETCH_CREATED_POST',
-            payload: { post_id: postId, getPhoto: getPhoto }
+                type: 'FETCH_PAGE',
+                payload: { 
+                    storybookId: storybookId, 
+                    pageNum: pageNum
+                }
+            })
+        getPhoto()
+    }, [storybookId, pageNum, imgUrl]);
+
+    console.log('This is pageNum:', pageNum);
+
+
+    const getPhoto = () => {
+        !pages ? '' : pages.map((item) => {
+            setImgUrl(item.img_url)
         })
     }
 
-    const getPhoto = () => {
-        try {
-            !post ? '' :  post.map((item) => {
-                setImgUrl(item.img_url)
-                const img = new window.Image()
-                img.src = item.img_url
-                img.onload = () => {
-                    setImage(img)
-                }
-            })
-        } catch (error) {
-            console.log('Error in getting image:', error);
-        }
+    const handleAddPage = (e) => {
+
+        dispatch({
+            type: 'CREATE_NEW_PAGE',
+            payload: { storybookId: storybookId, 
+                        pageNum: pageNum, 
+                        imgChange: imgChange,
+                        text: text,
+                        history: history }
+        })
+
+        return (
+            <div>
+            {!pages ? '' : 
+                (<ImageUrl 
+                    text={text}
+                    handleText={handleText}
+                    groupRef={groupRef}
+                    imgUrl={imgUrl}
+                    handleDragEnd={handleDragEnd}
+                    handleTransform={handleTransform}
+                    imgChange={imgChange}
+                    imgRef={imgRef}
+                    getPhoto={getPhoto} />
+            )}
+            </div>
+        )
     }
 
     const handleDragEnd = (e) => {
@@ -69,10 +163,6 @@ function CreatePage() {
             y: e.target.y(),
         }
         setImgChange(currentPosition)
-        dispatch({
-            type: 'UPDATE_IMAGE_POSITION',
-            payload: currentPosition
-        })
     }
 
     const handleTransform = (e) => {
@@ -91,118 +181,64 @@ function CreatePage() {
         })
     }
 
+    const handleText = (e) => {
+        setText(e.target.value)
+    }
+
 
     return (
         <div className="createPage">
-            <h2>Create</h2>
+            <h2 className="pageNumber">Page {pageNum}</h2>
 
-            <Stage className="createStage"
-                    height={800}
-                    width={800}
-                    onClick={(e) => { 
-                        if (e.target === e.target.getStage()) { 
-                            setImgSelected(false); 
-                            setTextSelected(false)
-                        }}}
-                    >
-                <Layer className="createStageLayer">
-                    {post.map((item) => {
-                        return (
-                            <Image className="createStageImage"
-                                    ref={imgRef}
-                                    key={item.id}
-                                    id='{item.id}'
-                                    image={image} 
-                                    width={imgChange.width} height={imgChange.height} 
-                                    x={imgChange.x} y={imgChange.y}
-                                    draggable
-                                    // onDragStart={handleDragStart}
-                                    onDragEnd={handleDragEnd}
-                                    onClick={() => setImgSelected(true)} 
-                                    onTransformEnd={handleTransform} />
-                        )
-                    })}
-                    {imgSelected && (
-                        <Transformer
-                            ref={imgTransformerRef}
-                            flipEnabled={false}
-                            boundBoxFunc={(oldBox, newBox) => {
-                                if (newBox.width < 20 || newBox.height < 20) {
-                                    return oldBox;
-                                }
-                                return newBox;
-                            }} /> 
-                    )}
+            {!pages ? '' : 
+                (<ImageUrl 
+                    text={text}
+                    handleText={handleText}
+                    groupRef={groupRef}
+                    imgUrl={imgUrl}
+                    handleDragEnd={handleDragEnd}
+                    handleTransform={handleTransform}
+                    imgChange={imgChange}
+                    imgRef={imgRef}
+                    getPhoto={getPhoto} />
+            )}
 
-                </ Layer>
-                <Layer>
-                    {showInput && (
-                        <Group id='textGroup'
-                            x={300} y={700}
-                            ref={groupRef}
-                            onClick={() => setTextSelected(true)} 
-                            >
-                            <Html >
-                                <input className="createStageText"
-                                        type='text'
-                                        placeholder='Write your story here...'
-                                        value={text}
-                                        onChange={e => setText(e.target.value)}
-                                        style={{
-                                            width: '200px',
-                                            height: '30px',
-                                            fontSize: '16px',
-                                            padding: '5px',
-                                            border: '1px solid black',
-                                            borderRadius: '5px',
-                                        }}
-                                        />
-                            </Html>
-                            
-                        </Group>
-                    )}
+            {handleAddPage}
 
-                    {textSelected && showInput && (
-                        <Transformer
-                            ref={transformerRef}
-                            flipEnabled={false}
-                            boundBoxFunc={(oldBox, newBox) => {
-                                if (newBox.width < 20 || newBox.height < 20) {
-                                    return oldBox;
-                                }
-                                return newBox;
-                            }} /> 
-                    )}
-                </Layer>
-            </Stage>
+            <div className="buttonDiv">
+                <button className="addImgButton"
+                    onClick={() => {
+                        history.push(`/image_page/${storybookId}/${pageNum}`)
+                    }}>+ Add Image</button>
 
-            <button onClick={() => {
-                history.push(`/image_page/${postId}`)
-            }}>Add Image</button>
+                <button className="addPageButton"
+                    onClick={handleAddPage}>+ Add Page</button>
 
-            <button onClick={() => setShowInput(true)}>Add Text</button>
+                <button className="publish"
+                    onClick={() => {
+                        dispatch({
+                            type: 'UPDATE_PAGE',
+                            payload: {
+                                imgChange: imgChange,
+                                text: text,
+                                storybookId: storybookId,
+                                pageNum: pageNum
+                            }
+                        })
+                        history.push('/home_page')
+                    }}>Publish</button>
 
-            <button onClick={() => {
-                dispatch({
-                    type: 'UPDATE_POST_POSITION_SIZE_TEXT',
-                    payload: {
-                        imgChange: imgChange,
-                        text: text,
-                        postId: postId
-                    }
-                })
-                history.push('/home_page')
-            }}>Publish</button>
-
-            <button onClick={() => {
-                dispatch({
-                    type: 'DELETE_CREATED_POST',
-                    payload: {
-                        post_id: postId,
-                        history: history,
-                    }
-                })
-            }}>Cancel</button>
+                <button className="cancel"
+                    onClick={() => {
+                        dispatch({
+                            type: 'DELETE_CREATED_STORYBOOK',
+                            payload: {
+                                storybookId: storybookId,
+                                history: history,
+                            }
+                        })
+                    }}>Cancel</button>
+            </div>
         </div>
     )
 
@@ -210,3 +246,123 @@ function CreatePage() {
 
 export default CreatePage;
 
+
+
+
+
+
+
+
+
+
+
+
+
+    // const fetchCreatedStorybook = () => {
+    //     dispatch({
+    //         type: 'FETCH_CREATED_STORYBOOK',
+    //         payload: { 
+    //             storybookId: storybookId, 
+    //             fetchPage, 
+    //             getPhoto }
+    //     })
+    // }
+
+    // {textSelected && (
+    //     <Transformer
+    //         ref={textTransformerReftransformerRef}
+    //         flipEnabled={false}
+    //         boundBoxFunc={(oldBox, newBox) => {
+    //             if (newBox.width < 20 || newBox.height < 20) {
+    //                 return oldBox;
+    //             }
+    //             return newBox;
+    //         }} /> 
+    // )}
+
+        // const handleAddPage = (e) => {
+    //     setPageCount(pageCount + 1)
+    //     dispatch({
+    //         type: 'CREATE_NEW_PAGE',
+    //         payload: { storybookId: storybookId, pageNum: pageCount }
+    //     })
+        
+    //     return (
+    //         <>
+    //             <h2>Page {setPageCount(pageCount)}</h2>
+    //             <Stage className="createStage"
+    //             height={800} width={800}
+    //             onClick={(e) => { 
+    //                 if (e.target === e.target.getStage()) { 
+    //                     setImgSelected(false); 
+    //                     setTextSelected(false)
+    //                 }}}
+    //             >
+    //         <Layer className="createStageLayer">
+    //             {storybook.map((item) => {
+    //                 return (
+    //                     <Image className="createStageImage"
+    //                             ref={imgRef}
+    //                             key={item.id}
+    //                             id='{item.id}'
+    //                             image={image} 
+    //                             width={imgChange.width} height={imgChange.height} 
+    //                             x={imgChange.x} y={imgChange.y}
+    //                             draggable
+    //                             // onDragStart={handleDragStart}
+    //                             onDragEnd={handleDragEnd}
+    //                             onClick={() => setImgSelected(true)} 
+    //                             onTransformEnd={handleTransform} />
+    //                 )
+    //             })}
+    //             {imgSelected && (
+    //                 <Transformer
+    //                     ref={imgTransformerRef}
+    //                     flipEnabled={false}
+    //                     boundBoxFunc={(oldBox, newBox) => {
+    //                         if (newBox.width < 20 || newBox.height < 20) {
+    //                             return oldBox;
+    //                         }
+    //                         return newBox;
+    //                     }} /> 
+    //             )}
+    //         </ Layer>
+    //         <Layer>
+    //             <Group id='textGroup'
+    //                 x={300} y={700}
+    //                 ref={groupRef}
+    //                 onClick={() => setTextSelected(true)} 
+    //                 >
+    //                 <Html >
+    //                     <input className="createStageText"
+    //                             type='text'
+    //                             placeholder='Write your story here...'
+    //                             value={text}
+    //                             onChange={e => setText(e.target.value)}
+    //                             style={{
+    //                                 width: '200px',
+    //                                 height: '30px',
+    //                                 fontSize: '16px',
+    //                                 padding: '5px',
+    //                                 border: '1px solid black',
+    //                                 borderRadius: '5px',
+    //                             }}
+    //                             />
+    //                 </Html>
+    //             </Group>
+    //             {textSelected && (
+    //                 <Transformer
+    //                     ref={textTransformerReftransformerRef}
+    //                     flipEnabled={false}
+    //                     boundBoxFunc={(oldBox, newBox) => {
+    //                         if (newBox.width < 20 || newBox.height < 20) {
+    //                             return oldBox;
+    //                         }
+    //                         return newBox;
+    //                     }} /> 
+    //             )}
+    //         </Layer>
+    //             </Stage>
+    //         </>
+    //     )
+    // }

@@ -24,6 +24,7 @@ import CreatePage from '../CreatePage/CreatePage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import ImagePage from '../ImagePage/ImagePage';
 import StoryFullScreen from '../StoryFullScreen/StoryFullScreen';
+import ProfileUserGallery from '../ProfilePage/ProfileUserGallery';
 
 import './App.css';
 
@@ -51,23 +52,13 @@ function App() {
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
             Even though it seems like they are different pages, the user is always on localhost:5173/user */}
 
-          <ProtectedRoute exact path="/user">
-            <UserPage />
-          </ProtectedRoute>
-          <ProtectedRoute exact path="/info">
-            <InfoPage />
-          </ProtectedRoute>
-
-
-
-
 
 
           <ProtectedRoute exact path="/home_page">
             <HomePage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/create_page/:id">
+          <ProtectedRoute exact path="/create_page/:id/:page?">
             <CreatePage />
           </ProtectedRoute>
 
@@ -75,7 +66,7 @@ function App() {
             <ProfilePage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/image_page/:id">
+          <ProtectedRoute exact path="/image_page/:id/:page?">
             <ImagePage />
           </ProtectedRoute>
 
@@ -83,7 +74,13 @@ function App() {
             <StoryFullScreen />
           </ProtectedRoute>
 
-          
+          <ProtectedRoute exact path="/profile_photo/:id">
+            <ProfileUserGallery />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/profile_cover/:id">
+            <ProfileUserGallery />
+          </ProtectedRoute>
 
 
 
@@ -91,17 +88,17 @@ function App() {
 
           <Route exact path="/login">
             {user.id ? 
-              <Redirect to="/user" /> : <LoginPage />
+              <Redirect to="/home_page" /> : <LoginPage />
             }
           </Route>
           <Route exact path="/registration">
             {user.id ?
-              <Redirect to="/user" /> : <RegisterPage />
+              <Redirect to="/home_page" /> : <RegisterPage />
             }
           </Route>
           <Route exact path="/home">
             {user.id ?
-              <Redirect to="/user" /> : <LandingPage />
+              <Redirect to="/home_page" /> : <LandingPage />
             }
           </Route>
           {/* If none of the other routes matched, we will show a 404. */}

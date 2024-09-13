@@ -8,7 +8,7 @@ function Nav() {
   const user = useSelector((store) => store.user);
 
   return (
-    <div className="nav">
+    <div className="nav tw-w-full tw-bg-black">
       <Link to="/home">
         <h2 className="nav-title">My Storybook</h2>
       </Link>
@@ -24,13 +24,13 @@ function Nav() {
         {/* If a user is logged in, show these links */}
         {user.id && (
           <>
-            <Link className="navLink" to="/user">
+            {/* <Link className="navLink" to="/user">
               Welcome
             </Link>
             <Link className="navLink" to="/home_page">
               Home
-            </Link>
-            <LogOutButton className="navLink" />
+            </Link> */}
+            <LogOutButton className="navLink tw-bg-black" />
           </>
         )}
 
