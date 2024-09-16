@@ -4,11 +4,13 @@ const router = express.Router();
 
 
 // ============= GET =============
-router.get('/', (req, res) => {
+router.get('/:id', (req, res) => {
+    const userId = req.params.id;
     const sqlText = `
-        SELECT * FROM "user_gallery";
+        SELECT * FROM "user_gallery"
+            WHERE "user_id" = $1;
     `
-    pool.query(sqlText)
+    pool.query(sqlText, [userId])
     .then((result) => {
         console.log('User gallery get');
         res.send(result.rows)
@@ -50,6 +52,17 @@ router.get('/cover_photo/:id', (req, res) => {
         res.send(result.rows);
     }) .catch((err) => {
         console.log('Error in updating user profile', err);
+        res.sendStatus(500);
+    })
+})
+
+router.get('/logo', (req,res) => {
+    sqlText = `SELECT * FROM "logo";`
+    pool.query(sqlText)
+    .then((result) => {
+        res.send(result.rows)
+    }) .catch((err) => {
+        console.log('Error in getting logo', err);
         res.sendStatus(500);
     })
 })

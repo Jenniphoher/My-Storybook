@@ -20,7 +20,7 @@ function ImagePage() {
     const fileRef = useRef(null);
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_GALLERY' })
+        dispatch({ type: 'FETCH_GALLERY', payload: user.id })
     }, [dispatch])
 
     const addPhoto = (e) => {
@@ -29,7 +29,8 @@ function ImagePage() {
             type: 'ADD_PHOTO',
             payload: {
                 title: title,
-                file: file
+                file: file,
+                userId: user.id
             }
         })
         setFile(null);

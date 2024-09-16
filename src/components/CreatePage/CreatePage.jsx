@@ -6,45 +6,33 @@ import { Html } from 'react-konva-utils';
 import useImage from 'use-image';
 import './CreatePage.css'
 
-function ImageUrl({imgUrl, handleDragEnd, handleTransform, imgChange, imgRef, getPhoto, text, handleText, groupRef}) {
+function ImageUrl({item, handleDragEnd, handleTransform, imgChange, imgRef, handleImgSelect, imgSelected}) {
     const imgTransformerRef = useRef(null);
-    const [imgSelected, setImgSelected] = useState(false);
-    const [image, imageStatus] = useImage(imgUrl);
+    const [image, imageStatus] = useImage(item.img_url);
+    
 
 
     useEffect(() => {
-        getPhoto()
-        if (imgSelected && imgUrl && imgTransformerRef.current && imgRef.current) { 
+        if (imgSelected && imgTransformerRef.current && imgRef.current) { 
             imgTransformerRef.current.nodes([imgRef.current]); 
             imgTransformerRef.current.getLayer().batchDraw(); 
         }
-    }, [imgSelected, imgUrl])
-
-    useEffect(() => {
-
-    }, [])
+    }, [imgSelected])
 
 
     return (
-        <Stage className="createStage"
-        height={950} width={1200}
-        onClick={(e) => { 
-            if (e.target === e.target.getStage()) { 
-                setImgSelected(false); 
-                setTextSelected(false)
-            }}}
-        >
+
         <Layer className="createStageLayer">
             <Image className="createStageImage"
-                    ref={imgRef}
-                    image={image} 
-                    width={imgChange.width} height={imgChange.height} 
-                    x={imgChange.x} y={imgChange.y}
-                    draggable
-                    onDragEnd={handleDragEnd}
-                    onClick={() => setImgSelected(true)} 
-                    onTransformEnd={handleTransform} />
-
+                ref={imgRef}
+                image={image} 
+                width={imgChange.width} height={imgChange.height} 
+                x={imgChange.x} y={imgChange.y}
+                draggable
+                onDragEnd={handleDragEnd}
+                onClick={handleImgSelect} 
+                onTransformEnd={handleTransform} />
+            
             {imgSelected && (
                 <Transformer
                     ref={imgTransformerRef}
@@ -57,31 +45,7 @@ function ImageUrl({imgUrl, handleDragEnd, handleTransform, imgChange, imgRef, ge
                     }} /> 
             )}
         </ Layer>
-                        <Layer>
-                        <Group id='textGroup'
-                            x={250} y={800}
-                            ref={groupRef}
-                            // onClick={() => setTextSelected(true)} 
-                            >
-                            <Html >
-                                <input className="createStageText"
-                                        type='text'
-                                        placeholder='Write your story here...'
-                                        value={text}
-                                        onChange={handleText}
-                                        style={{
-                                            width: '700px',
-                                            height: '60px',
-                                            fontSize: '28px',
-                                            padding: '5px',
-                                            border: '1px solid black',
-                                            borderRadius: '5px',
-                                        }}
-                                        />
-                            </Html>
-                        </Group>
-                    </Layer>
-                </Stage>
+
     )
 
 }
@@ -90,6 +54,7 @@ function CreatePage() {
     // const textTransformerRef = useRef(null);
     const groupRef = useRef(null);
     const imgRef = useRef(null);
+    const imgSelectedRef = useRef(false)
     const storybook = useSelector(store => store.storybook)
     const pages = useSelector(store => store.pages);
     const pageNumStore = useSelector(store => store.pageNum);
@@ -102,9 +67,10 @@ function CreatePage() {
 
     
     // const [textSelected, setTextSelected] = useState(false);
+    const [imgSelected, setImgSelected] = useState(false);
     const [imgUrl, setImgUrl] = useState(null)
     const [text, setText] = useState('');
-    const [imgChange, setImgChange] = useState({x:200, y:150, width: 400, height: 480});
+    const [imgChange, setImgChange] = useState({x:200, y:150, width: 800, height: 980});
     // const [textSize, setTextSize] = useState('');
 
     useEffect(() => {
@@ -115,17 +81,11 @@ function CreatePage() {
                     pageNum: pageNum
                 }
             })
-        getPhoto()
-    }, [storybookId, pageNum, imgUrl]);
+    }, [storybookId, pageNum, dispatch]);
 
     console.log('This is pageNum:', pageNum);
+    console.log('This is pages:', pages);
 
-
-    const getPhoto = () => {
-        !pages ? '' : pages.map((item) => {
-            setImgUrl(item.img_url)
-        })
-    }
 
     const handleAddPage = (e) => {
 
@@ -185,23 +145,63 @@ function CreatePage() {
         setText(e.target.value)
     }
 
+    const handleImgSelect = () => {
+        setImgSelected(true)
+    }
+
 
     return (
         <div className="createPage">
             <h2 className="pageNumber">Page {pageNum}</h2>
 
-            {!pages ? '' : 
-                (<ImageUrl 
-                    text={text}
-                    handleText={handleText}
-                    groupRef={groupRef}
-                    imgUrl={imgUrl}
-                    handleDragEnd={handleDragEnd}
-                    handleTransform={handleTransform}
-                    imgChange={imgChange}
-                    imgRef={imgRef}
-                    getPhoto={getPhoto} />
-            )}
+            <Stage className="createStage"
+                height={950} width={1200}
+                onClick={(e) => { 
+                    if (e.target === e.target.getStage()) { 
+                        setImgSelected(false)
+                    }}}
+            >
+
+                    {pages.map((item) => {
+                        return (
+                        <ImageUrl item={item}
+                            text={text}
+                            handleText={handleText}
+                            handleDragEnd={handleDragEnd}
+                            handleTransform={handleTransform}
+                            imgChange={imgChange}
+                            imgSelected={imgSelected}
+                            handleImgSelect={handleImgSelect}
+                            imgRef={imgRef} />
+                        )
+                    })}
+
+                <Layer>
+                    <Group id='textGroup'
+                        x={250} y={800}
+
+                        // onClick={() => setTextSelected(true)} 
+                        >
+                        <Html >
+                            <input className="createStageText"
+                                    type='text'
+                                    placeholder='Write your story here...'
+                                    value={text}
+                                    onChange={handleText}
+                                    style={{
+                                        width: '700px',
+                                        height: '60px',
+                                        fontSize: '28px',
+                                        padding: '5px',
+                                        border: '1px solid black',
+                                        borderRadius: '5px',
+                                    }}
+                                    />
+                        </Html>
+                    </Group>
+                </Layer>
+            </Stage>
+
 
             {handleAddPage}
 

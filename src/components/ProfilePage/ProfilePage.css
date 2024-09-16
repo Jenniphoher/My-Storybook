@@ -48,7 +48,8 @@
 }
 
 .profilePicture {
-    width: auto;
+    position: absolute;
+    margin-top: -55px;
 }
 
 .profileName {

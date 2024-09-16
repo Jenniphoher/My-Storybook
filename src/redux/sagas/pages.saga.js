@@ -13,7 +13,7 @@ function* createNewPage(action) {
             type: 'UPDATE_PAGE_ON_NEW_PAGE',
             payload: action.payload
         })
-
+        
         // action.payload.history.push(`/create_page/${storybookId}/${newPage}`)
     } catch (error) {
         console.log('Error creating page', error)
@@ -38,7 +38,6 @@ function* fetchPage(action) {
         console.log('Error getting page', error)
     }
 }
-
 
 
 // ============= UPDATE PAGE =============

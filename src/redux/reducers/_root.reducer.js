@@ -8,6 +8,7 @@ import storybook from './storybook.reducer';
 import pages from './pages.reducer';
 import pageNum from './pageNum.reducer';
 import profileCover from './profileCover.reducer';
+import logo from './logo.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   profilePicture,
   pages,
   pageNum,
-  profileCover
+  profileCover,
+  logo
 });
 
 export default rootReducer;

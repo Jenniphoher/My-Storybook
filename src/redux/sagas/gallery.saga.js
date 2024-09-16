@@ -7,7 +7,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 function* fetchGallery(action) {
     // console.log('payload:', action.payload);
     try {
-        const response = yield axios.get('/api/gallery');
+        const response = yield axios.get(`/api/gallery/${action.payload}`);
         yield put({ 
             type: 'SET_GALLERY', 
             payload: response.data });
@@ -23,6 +23,7 @@ function* fetchGallery(action) {
 function* addPhoto(action) {
     const file = action.payload.file
     const title = action.payload.title;
+    const userId = action.payload.userId;
     try {
         const data = new FormData();
         data.append('file', file);
@@ -31,7 +32,7 @@ function* addPhoto(action) {
         // console.log('title is:', title);
         // console.log('This is data:', data);
         yield axios.post('/api/upload', data);
-        yield put({ type: 'FETCH_GALLERY' })
+        yield put({ type: 'FETCH_GALLERY', payload: userId })
     } catch (error) {
         console.log("Error uploading photo:", error);
     }
@@ -107,10 +108,11 @@ function* fetchProfileCover(action) {
 
 // ------- done fixing
 function* addProfilePicture(action) {
-    const userId = action.payload.useuserIdr_id
+    const userId = action.payload.userId
     // console.log('This is profile photo payload:', action.payload);
     try {
         yield axios.put(`/api/gallery/profile_picture/${userId}`, action.payload)
+        action.payload.history.push(`/profile_page/${userId}`)
     } catch (error) {
         console.log('Error adding profile picture', error);
     }
@@ -129,6 +131,21 @@ function* addProfileCover(action) {
     
 }
 
+
+
+// ============= PROFILE PICTURE && COVER =============
+function* fetchLogo(action) {
+    try {
+        const response = yield axios.get(`/api/gallery/logo`)
+        yield put({
+            type: 'SET_LOGO',
+            payload: response.data
+        })
+    } catch (error) {
+        console.log('Error getting logo', error);
+    }
+}
+
 // ============= SAGA =============
 function* gallerySaga() {
     yield takeLatest('FETCH_GALLERY', fetchGallery);
@@ -139,6 +156,7 @@ function* gallerySaga() {
     yield takeLatest('ADD_PHOTO', addPhoto);
     yield takeLatest('ADD_PROFILE_PICTURE', addProfilePicture)
     yield takeLatest('ADD_PROFILE_COVER', addProfileCover)
+    yield takeLatest('FETCH_LOGO', fetchLogo)
     
 }
 

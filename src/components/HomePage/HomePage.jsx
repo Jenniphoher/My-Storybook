@@ -11,29 +11,18 @@ import NavBar from "../NavBar/NavBar";
 import './HomePage.css'
 
 
-function ImageUrl({item}) {
-    const [image] = useImage(item.img_url)
-
-    useEffect(() => {
-        // getPhoto()
-    }, [])
+function Stories({item}) {
 
     return (
-        <Layer className="homeStageLayer">
-            {/* <Html>
+        <div>
+            <div className="homeStageDiv">
                 <img className="homeStageImage"
-                        src={item.img_url} 
-                        width={Number(item.img_width)} height={Number(item.img_height)} 
-                        x={Number(item.img_x)} y={Number(item.img_y)} />
-            </Html> */}
-            <Image className="homeStageImage"
-                    image={image} 
+                    src={item.img_url} 
                     width={Number(item.img_width)} height={Number(item.img_height)} 
-                    x={Number(item.img_x)} y={Number(item.img_y)}/>
-            <Text className="homeStageText"
-                    x={300} y={700}
-                    text={item.text} />
-        </Layer>
+                    />
+                <p className="homeStageText">{item.text}</p>
+            </div>
+        </div>
     )
 
 }
@@ -43,13 +32,29 @@ function HomePage() {
     const history = useHistory();
     const user = useSelector(store => store.user);
     const storybook = useSelector(store => store.storybook)
+    const [isLoading, setIsLoading] = useState(true);
     
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_ALL_STORIES' });
-    }, [dispatch]);
+        const fetchGallery = async () => {
+            setIsLoading(true);
+            try {
+                await dispatch({ type: 'FETCH_ALL_STORIES' });
+                setIsLoading(false)
+            } catch (error) {
+                setIsLoading(false)
+            }
+        }
+        fetchGallery()
+    }, []);
 
+    if(isLoading) {
+        return (
+            <div className="loading">
 
+            </div>
+        )
+    }
 
     console.log('This is storybook:', storybook);
 
@@ -69,27 +74,16 @@ function HomePage() {
                             sx={{ borderRadius: 3,
                                 boxShadow: '2px 2px 5px rgba(3, 10, 26, 0.2), -2px 2px 5px rgba(3, 10, 26, 0.2), 2px -2px 5px rgba(3, 10, 26, 0.2), -2px -2px 5px rgba(3, 10, 26, 0.2)'
                             }}
-                            // sx={{ backgroundColor: 'rgb(3, 10, 26)' }}
                             >
                             <span className="tw-flex tw-flex-row tw-m-5" >
                                 <img className="tw-size-20 tw-rounded-full" 
-                                    src={user.profile_photo}
+                                    src={item.profile_photo}
                                     onClick={() => {
 
                                     }} />
-                                <h4 className="tw-font-bold tw-pt-5 tw-pl-5 tw-text-2xl">{user.username}</h4>
+                                <h4 className="tw-font-bold tw-pt-5 tw-pl-5 tw-text-2xl">{item.username}</h4>
                             </span>
-
-                            
-                            <Stage className="tw-flex tw-flex-items tw-items-center tw-my-5 tw-bg-[rgb(3,10,26)] tw-rounded-md"
-                                key={item.id}
-                                height={800}
-                                width={800}
-                                >
-                                <ImageUrl className="tw-"
-                                        item={item} 
-                                />
-                            </Stage>
+                            <Stories item={item} />
                         </Card>
                     )
                 })}
@@ -109,3 +103,9 @@ export default HomePage;
     //             setImgUrl(item.img_url)
     //         })
     // }
+
+
+    // <Image className="homeStageImage"
+    //                 image={image} 
+    //                 width={Number(item.img_width) * 0.8} height={Number(item.img_height)* 0.8} 
+    //                 y={100} />

@@ -11,6 +11,7 @@ body,
 }
 
 body {
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,9 +23,9 @@ body {
   background-image: url('https://res.cloudinary.com/dep5h4tka/image/upload/v1726210329/vecteezy_white-clouds-vector-paper-clouds-white-cloud-on-blue-sky_19860273_ft4sim.png');
 }
 
-.content {
+/* .content {
   flex: 1;
-}
+} */
 
 /* img {
   display: inline-block;

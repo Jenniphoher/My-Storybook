@@ -29,6 +29,38 @@
     font-weight: 300;
 }
 
+.homeStageDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    height: 800px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: rgb(3,10,26);
+}
+
+.homeStageImage {
+    margin-top: -40px;
+    padding: 10px;
+    width: 600px;
+}
+
+.homeStageText {
+    margin: 0px 110px;
+    margin-top: -115px;
+    color: white;
+    font-size: 35px;
+    text-shadow: 1px 1px 1px black, 
+                -1px 1px 1px black,
+                1px -1px 1px black,
+                -1px -1px 1px black;
+}
+
+/* tw-flex tw-flex-items tw-items-center tw-my-5 tw-bg-[rgb(3,10,26)] tw-rounded-md */
+
 .card {
     position: relative;
 }

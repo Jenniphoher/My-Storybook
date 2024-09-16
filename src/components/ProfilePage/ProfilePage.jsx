@@ -105,7 +105,7 @@ function ProfilePage() {
                             <img className="profileImages"
                                 src={item.img_url}
                                 onClick={() => {
-                                    history.push(`/story_fullscreen/${item.id}`)
+                                    history.push(`/story_fullscreen/${item.storybook_id}`)
                                 }} />
                         </Card>
                     )

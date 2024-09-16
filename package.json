@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-konva": "^18.2.10",
     "react-konva-utils": "^1.0.6",
+    "react-photoswipe-gallery": "^3.0.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.3.4",
     "redux": "^4.1.2",

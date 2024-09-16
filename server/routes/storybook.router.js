@@ -43,22 +43,26 @@ router.post('/', async (req, res) => {
 // ----- fetchAllStories
 router.get('/', (req, res) => {
     const sqlText = `
-        SELECT "sb_pages".img_x, "sb_pages".img_y, "sb_pages".img_width, "sb_pages".img_height,
-                "sb_pages".id, "sb_pages".text, "sb_pages".storybook_id, "sb_pages".user_gallery_id,
-                "storybook".user_id, 
+        SELECT "storybook".user_id, "storybook".id,
+                "user".username, "user".profile_photo,
+                "sb_pages".img_x, "sb_pages".img_y, "sb_pages".img_width, "sb_pages".img_height,
+                "sb_pages".id AS sb_pages_id, "sb_pages".text, "sb_pages".user_gallery_id,
+                "sb_pages".page_number,
                 "user_gallery".title, "user_gallery".img_url
-            FROM "user"
-            JOIN "storybook"
+            FROM "storybook"
+            JOIN "user"
                 ON "storybook".user_id = "user".id
             JOIN "sb_pages"
                 ON "sb_pages".storybook_id = "storybook".id
             JOIN "user_gallery"
                 ON "user_gallery".id = "sb_pages".user_gallery_id
-                WHERE "user".id = $1;
+                ORDER BY "storybook".id DESC;
         `
-    pool.query(sqlText, [req.user.id])
+    pool.query(sqlText)
     .then((result) => {
         console.log('Get all storybooks');
+        // const finalData = sortStories(result.rows)
+        // res.send(finalData)
         res.send(result.rows)
     }) .catch((err) => {
         console.log('Server get storybooks error', err);
@@ -94,7 +98,8 @@ router.get('/:id', (req, res) => {
 // ----- fetchProfileStories
 router.get('/profile/:id', (req, res) => {
     const sqlText = `
-        SELECT "sb_pages".id, "sb_pages".storybook_id,"sb_pages".page_number, "user_gallery".img_url FROM "user"
+        SELECT "sb_pages".id, "sb_pages".storybook_id,"sb_pages".page_number, "user_gallery".img_url 
+            FROM "user"
             JOIN "storybook"
                 ON "storybook".user_id = "user".id
             JOIN "sb_pages"
@@ -115,21 +120,26 @@ router.get('/profile/:id', (req, res) => {
 
 // ----- fetchStoryFullscreen
 router.get('/fullscreen/:id', (req, res) => {
-    const storyId = req.params.id;
+    const storybookId = req.params.id;
     const sqlText = `
-        SELECT "post".x_position, "post".y_position, "post".img_width, "post".img_height,
-            "post".id, "post".text, "post".user_id,"user_gallery".title, "user_gallery".img_url, 
-            "post".user_gallery_id FROM "post"
-            JOIN "user_gallery"
-            ON "user_gallery".id = "post".user_gallery_id
-            WHERE "post".id = $1;
+        SELECT "sb_pages".img_x, "sb_pages".img_y, "sb_pages".img_width, "sb_pages".img_height,
+            "sb_pages".page_number, "sb_pages".text, 
+            "sb_pages".storybook_id, "sb_pages".user_gallery_id,
+            "user_gallery".title, "user_gallery".img_url
+            FROM "storybook"
+                JOIN "sb_pages"
+                    ON "sb_pages".storybook_id = "storybook".id
+                JOIN "user_gallery"
+                    ON "user_gallery".id = "sb_pages".user_gallery_id
+                    WHERE "storybook".id = $1
+                    ORDER BY "sb_pages".page_number;
         `
-    pool.query(sqlText, [storyId])
+    pool.query(sqlText, [storybookId])
     .then((result) => {
-        console.log('get fullscreen');
+        console.log('Get storybook fullscreen');
         res.send(result.rows)
     }) .catch((err) => {
-        console.log('server get fullscreen error', err);
+        console.log('Server get fullscreen error', err);
         res.sendStatus(500)
     })
 });
@@ -230,6 +240,22 @@ router.put('/img_text/:id', (req, res) => {
     })
 })
 
+// function sortStories(array) {
+//     let obj = {}
+    
+//     for(let story of array) {
+//         let storyId = story.id
+//         let storyIds = []
+//         if(storyIds.includes(storyId)) {
+//             obj.storyId.push(story)
+//         } else {
+//             storyIds.push(storyId)
+//             obj.storyId = [story];
+//         }
+//     }
+
+//     return obj;
+// }
 
 
 module.exports = router;

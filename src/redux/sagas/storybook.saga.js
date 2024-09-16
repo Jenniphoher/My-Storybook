@@ -20,7 +20,6 @@ function* createStorybook(action) {
                 pageNum: pageNum
             }
         })
-
         action.payload.history.push(`/create_page/${storybookId}/${pageNum}`)
     } catch (error) {
         console.log('Error creating story', error)
@@ -28,9 +27,9 @@ function* createStorybook(action) {
 }
 
 function* fetchAllStories(action) {
-    const getPhoto = action.payload
     try {
         const response = yield axios.get('api/storybook')
+        console.log('This is fetchALLL data:', response.data);
         yield put({
             type: 'SET_STORYBOOKS',
             payload: response.data
@@ -75,14 +74,13 @@ function* fetchProfileStories(action) {
 // ============= FULLSCREEN =============
 function* fetchStoryFullscreen(action) {
     const storybookId = action.payload.storybookId;
-    const getPhoto = action.payload.getPhoto
     try {
         const response = yield axios.get(`api/storybook/fullscreen/${storybookId}`)
+        console.log('data from resopnse:', response.data);
         yield put({
             type: 'SET_STORYBOOK',
             payload: response.data
         })
-        getPhoto()
     } catch (error) {
         console.log('Error getting fullscreen story', error)
     }

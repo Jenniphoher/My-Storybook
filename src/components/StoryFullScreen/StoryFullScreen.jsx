@@ -5,40 +5,60 @@ import { useEffect, useState} from "react";
 import { Stage, Layer, Image, Text } from 'react-konva'; 
 import Swal from "sweetalert2";
 import { useParams, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import useImage from "use-image";
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+
+
+function ImageUrl({item}) {
+    const [image] = useImage(item.img_url)
+
+    useEffect(() => {
+
+    }, [])
+
+    return (
+        <Layer className="homeStageLayer">
+            <Image className="homeStageImage"
+                    image={image} 
+                    width={Number(item.img_width)} height={Number(item.img_height)} 
+                    x={Number(item.img_x)} y={Number(item.img_y)} />
+            <Text className="homeStageText"
+                    x={450} y={800}
+                    fontSize={ 32 }
+                    fontStyle="bold"
+                    fontFamily="Montserrat Alternates"
+                    stroke={'white'}
+                    strokeWidth={1.5}
+                    fill={'black'}
+                    text={item.text} />
+        </Layer>
+    )
+
+}
+
 
 function StoryFullScreen() {
     const dispatch = useDispatch();
     const history = useHistory();
     const params = useParams();
-    const postId = params.id;
+    const storybookId = params.id;
     const user = useSelector(store => store.user);
-    const post = useSelector(store => store.post)
-    const [image, setImage] = useState('');
-    const [imgUrl, setImgUrl] = useState('')
+    const storybook = useSelector(store => store.storybook)
+    const [marginLeft, setMarginLeft] = useState(0);
+    const [img, setImg] = useState(0)
+    const item = document.querySelector('.storyFullScreenList')
+    let length = storybook.length - 1;
+    let active = 0;
 
     useEffect(() => {
         dispatch({
             type: 'FETCH_STORY_FULLSCREEN',
-            payload: {postId: postId, getPhoto}
+            payload: {
+                storybookId: storybookId, 
+            }
         })
-  
-    }, [postId, imgUrl])
-
-    const getPhoto = () => {
-        try {
-            !post ? '' :  post.map((item) => {
-                setImgUrl(item.img_url)
-                const img = new window.Image()
-                img.src = item.img_url
-                img.onload = () => {
-                    setImage(img)
-                }
-                
-            })
-        } catch (error) {
-            console.log('Error in getting image:', error);
-        }
-    }
+    }, [storybookId])
 
     const handleDelete = async () => {
         try {
@@ -53,7 +73,7 @@ function StoryFullScreen() {
                 dispatch({
                     type: 'DELETE_STORY',
                     payload: {
-                        story_id: postId,
+                        story_id: storybookId,
                         history: history,
                         user_id: user.id
                     }
@@ -67,44 +87,78 @@ function StoryFullScreen() {
 
     }
 
+    const handleLeft = () => {
+        const currentImg = img;
+        if(currentImg > 0) {
+            setImg(currentImg - 1)
+            setLeft();
+        }
+    }
+
+    const setLeft = () => {
+        if(img > 0) {
+            setMarginLeft(marginLeft + 1200);    
+        }
+    }
+
+    const handleRight = () => {
+        const currentImg = img;
+        if(currentImg != length) {
+            setImg(currentImg + 1)
+            setRight();
+        }
+    }
+
+    const setRight = () => {
+        if(img != length) {
+            setMarginLeft(marginLeft - 1200);    
+        }
+    }
+
+    console.log('This is storybook:', storybook);
+    console.log('This is marginLeft:', marginLeft);
+    console.log('This is img:', img);
+
     return (
         <div className="storyFullScreen">
-            <h2>{user.first_name}'s Story</h2>
+            <h2 className="userName">{user.first_name}'s Story</h2>
 
-            <div className="storyFullScreenGallery">
-                {post.map((item) => {
+            <div className="storyFullScreenSlider">
+                <div className="storyFullScreenList"
+                    style={{marginLeft: `${marginLeft}px`}}>
+                    {storybook.map((item) => {
                     return (
                         <span className="storyFullScreenSpan"
                                 key={item.id}>
-                            <Stage className="homeStage"
+                            <Stage className="active"
                                 key={item.id}
-                                height={800}
-                                width={800}
+                                height={950} width={1200}
                                 >
-                                <Layer className="homeStageLayer">
-                                    <Image className="homeStageImage"
-                                            image={image} 
-                                            width={Number(item.img_width)} height={Number(item.img_height)} 
-                                            x={Number(item.x_position)} y={Number(item.y_position)} />
-                                    <Text className="homeStageText"
-                                            x={300} y={700}
-                                            text={item.text} />
-                                </Layer>
+                            <ImageUrl item={item} />
                             </Stage>
-                            
-                            <span className="storyFullScreenButtons">
-                                <button className="storyFullScreenDelete"
-                                    onClick={handleDelete}>Delete</button>
-                                <button className="storyFullScreenClose"
-                                    onClick={() => {
-                                    history.push(`/profile_page/${user.id}`)
-                                }}>Close</button>
-                            </span>
                         </span>
                     )
-                })}
+                    })}
+                </div>
             </div>
 
+            <span className="slideButtons">
+                <ArrowCircleLeftIcon className="leftBtn"
+                    sx={{ fontSize: 60 }}
+                    onClick={handleLeft} />
+                <ArrowCircleRightIcon className="rightBtn"
+                    sx={{ fontSize: 60 }}
+                    onClick={handleRight} />
+            </span>
+
+            <span className="storyFullScreenButtons">
+                <button className="storyFullScreenDelete"
+                    onClick={handleDelete}>Delete</button>
+                <button className="storyFullScreenClose"
+                    onClick={() => {
+                    history.push(`/profile_page/${user.id}`)
+                }}>Close</button>
+            </span>
             <NavBar />
         </div>
     )
