@@ -1,21 +1,107 @@
 .homePage {
-    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding-top: 1000px;
-    padding-bottom: 200px;
-    height: 92vh;
     background-color: rgb(237, 255, 252);
-    overflow: scroll;
 }
 
-.h2Home {
-    margin-bottom: 100px;
+.homeTitleDiv {
+    display: flex;
+    align-items: center;
+    margin: 80px auto;
+    margin-left: 260px;
 }
 
-h4 {
-    margin: 10px auto;
+.homePageTitle {
+    margin-left: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.homeBody {
+    margin-top: -100px;
+}
+
+.homeUsername {
+    font-weight: 300;
+}
+
+.homeStageDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    height: 800px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: rgb(3,10,26);
+}
+
+.homeStageImage {
+    margin-top: -40px;
+    padding: 10px;
+    width: 600px;
+}
+
+.homeStageText {
+    margin: 0px 110px;
+    margin-top: -115px;
+    color: white;
+    font-size: 35px;
+    text-shadow: 1px 1px 1px black, 
+                -1px 1px 1px black,
+                1px -1px 1px black,
+                -1px -1px 1px black;
+}
+
+/* tw-flex tw-flex-items tw-items-center tw-my-5 tw-bg-[rgb(3,10,26)] tw-rounded-md */
+
+.card {
+    position: relative;
+}
+
+@property --angle{
+    syntax: "angle";
+    initial-value: 0deg;
+    inherits: false;
+} 
+
+.card::after::before {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle)red, orange, yellow, green, blue, indigo, purple);
+    padding: 10px;
+    animation: 3s spin linear infinite;
+}
+
+.card::before {
+    filter: blur(5px);
+    opacity: 0.5;
+}
+
+@keyframes spin {
+    from {
+        --angle: 0deg;
+    } to {
+        --angle: 360deg;
+    }
+}
+
+.hidden {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateX(-100%);
+    transition: all 1s;
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
 }

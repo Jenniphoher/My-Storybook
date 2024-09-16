@@ -1,0 +1,98 @@
+.loginPage {
+    margin: 0px 0px;
+    padding: 0px 200px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(199, 255, 236);
+    background-image: url('https://res.cloudinary.com/dep5h4tka/image/upload/v1726261215/vecteezy_wooden-book-shelf-on-transparent-background_46027836_b1okw6.png');
+    background-size: 46%;
+    background-repeat: no-repeat;
+    background-position: 17% 30%;
+}
+
+.loginScreenText {
+    margin-top: -50px;
+    font-size: 110px;
+    font-weight: 900;
+    text-shadow: 3px 3px 1px whitesmoke,
+                3px -3px 1px whitesmoke,
+                -3px 3px 1px whitesmoke,
+                -3px -3px 1px whitesmoke;
+}
+
+.Tell {
+    font-size: 160px;
+    font-family: "Montagu Slab", serif;
+}
+
+.yourStory {
+    margin-top: -50px;
+    font-style: italic;
+    font-family: "Playwrite CU", cursive;
+}
+
+.formPanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 480px;
+    height: 450px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgb(234, 244, 255);
+    box-shadow: 2px 2px 4px rgba(67, 77, 52, 0.6);
+}
+
+.loginTitle {
+    margin-top: -80px;
+    font-size: 30px;
+}
+
+.inputWrapper {
+    margin-top: 10px;
+    padding-top: 20px;
+    width: 430px;
+    height: 200px;
+
+}
+
+.usernameDiv, .pwDiv {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.formLabel {
+    margin-right: 10px;
+}
+
+.formInput {
+
+}
+
+.registerDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    margin: 50px;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: rgb(83, 255, 158);
+    box-shadow: 2px 2px 4px rgba(22, 66, 50, 0.6);
+}
+
+.btn:hover {
+    cursor: pointer;
+    border: 1px solid rgb(0, 38, 128);
+    color: rgb(236, 20, 20);
+    background-color: rgb(75, 169, 246);
+    box-shadow: 2px 2px 4px rgba(22, 44, 66, 0.6);
+}
+
