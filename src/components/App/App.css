@@ -1,3 +1,9 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
 html,
 body,
 #react-root {
@@ -5,28 +11,40 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  font-family: "Montserrat Alternates", sans-serif;
 }
 
-img {
+.bgClouds {
+  background-image: url('https://res.cloudinary.com/dep5h4tka/image/upload/v1726210329/vecteezy_white-clouds-vector-paper-clouds-white-cloud-on-blue-sky_19860273_ft4sim.png');
+}
+
+/* .content {
+  flex: 1;
+} */
+
+/* img {
   display: inline-block;
   max-width: 100%;
-}
+}  */
 
 /* --------------------------------------------------------------------------------
 Container
 -------------------------------------------------------------------------------- */
 
-.container {
+/* .container {
   padding: 20px;
-}
+} */
 
 /* --------------------------------------------------------------------------------
 Button
 -------------------------------------------------------------------------------- */
 
-.btn {
+/* .btn {
   display: inline-block;
   padding: 10px 20px;
   border-color: #014041;
@@ -60,7 +78,7 @@ Button
 }
 
 /* This line makes the "Register" and "Login" buttons look like links */
-.btn_asLink {
+/* .btn_asLink {
   padding: 0;
   border-width: 0;
   border-bottom: 1px solid #444;
@@ -74,13 +92,13 @@ Button
   background-color: transparent;
   border-color: #008183;
   color: #008183;
-}
+}  */
 
 /* --------------------------------------------------------------------------------
 Alert
 -------------------------------------------------------------------------------- */
 
-.alert {
+/* .alert {
   box-sizing: border-box;
   padding: 15px 10px;
   margin: 15px 0;
@@ -89,13 +107,13 @@ Alert
   border-radius: 3px;
   color: #e01616;
   font-size: 0.8rem;
-}
+} */
 
 /* --------------------------------------------------------------------------------
 Form Treatment
 -------------------------------------------------------------------------------- */
 
-.formPanel {
+/* .formPanel {
   box-sizing: border-box;
   width: 400px;
   max-width: 100%;
@@ -110,3 +128,8 @@ input {
   margin: 5px;
   margin-bottom: 10px;
 }
+
+img {
+  height: 100vh;
+} */
+

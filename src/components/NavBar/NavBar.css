@@ -1,0 +1,36 @@
+.navBar {
+    position: fixed;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    margin: 0px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 1px solid white;
+    background-color: rgba(8, 49, 58, 1);
+    /* visibility: hidden; */
+}
+
+.navBar:hover {
+    cursor: pointer;
+    visibility: visible;
+}
+
+.homeButton {
+    margin: 0px auto;
+}
+
+.createButton {
+    margin: 0px auto;
+    height: 70px;
+    width: 70px;
+    border: 0;
+    border-radius: 50%;
+    font-size: 60px;
+}
+
+.profileButton {
+    margin: 0px auto;
+}

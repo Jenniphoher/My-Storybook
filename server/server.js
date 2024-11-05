@@ -9,6 +9,10 @@ const passport = require('./strategies/user.strategy');
 
 // Route Includes
 const userRouter = require('./routes/user.router');
+const galleryRouter = require('./routes/gallery.router');
+const uploadRouter = require('./routes/upload.router');
+const storybookRouter = require('./routes/storybook.router')
+const pagesRouter = require('./routes/pages.router')
 
 // Express Middleware
 app.use(express.json());
@@ -24,6 +28,10 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/user', userRouter);
+app.use('/api/gallery', galleryRouter)
+app.use('/api/upload', uploadRouter)
+app.use('/api/storybook', storybookRouter)
+app.use('/api/pages', pagesRouter)
 
 // Listen Server & Port
 app.listen(PORT, () => {

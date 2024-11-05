@@ -1,42 +1,61 @@
 .nav {
-  /* flex box layout */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0px auto;
+  padding: 5px 40px;
+  /* background-color: rgba(8, 49, 58, 1); */
+  border-bottom: 1px solid white;
+}
 
-  margin: 0 0 30px;
-  background-color: #00acb0;
+.logoImgWrapper {
+  position: relative;
   overflow: hidden;
 }
 
-.nav a {
-  text-decoration: none;
+.logoImg {
+  margin-right: 30px;
+  width: 6%;
+
 }
 
 .nav-title {
+  margin-left: -30px;
+  margin-top: -60px;
   font-size: 24px;
   font-weight: 700;
-  color: #f2f2f2;
-  padding-left: 10px;
-  margin: 0;
+  color:  rgb(237, 255, 252);
+  padding-left: 30px;
+  text-shadow: 2px 2px 1px black,
+              -2px 2px 1px black,
+              2px -2px 1px black,
+              -2px -2px 1px black;
+}
+
+.nav-title2 {
+  margin-left: -20px;
+  margin-top: -10px;
+  font-size: 24px;
+  font-weight: 700;
+  color:  rgb(237, 255, 252);
+  padding-left: 30px;
+  text-shadow: 2px 2px 1px black,
+              -2px 2px 1px black,
+              2px -2px 1px black,
+              -2px -2px 1px black;
 }
 
 .navLink {
   display: inline-block;
-  color: #f2f2f2;
-  background-color: #00acb0;
+  color:  rgb(237, 255, 252);
+  background-color: rgba(8, 49, 58, 1);
   text-align: center;
   padding: 24px 10px;
   text-decoration: none;
-  font-size: 15px;
-
-  /* these last two make the logout button in
-  the nav bar look like another link */
+  font-size: 20px;
   border: none;
   cursor: pointer;
   outline: 0;
 }
 
-.navLink:hover {
-  background-color: #008183;
-}
+
