@@ -9,11 +9,16 @@ CREATE TABLE "user" (
 	"cover_photo" VARCHAR (250)
 );
 
+CREATE TABLE "logo" (
+	"id" SERIAL PRIMARY KEY,
+	"logo_img" VARCHAR (250)
+);
 
-CREATE TABLE "post" (
+
+CREATE TABLE "storybook" (
 	"id" SERIAL PRIMARY KEY,
 	"is_public" BOOLEAN DEFAULT FALSE,
-	"user_id" INT REFERENCES "user" NOT NULL,
+	"user_id" INT REFERENCES "user" NOT NULL
 );
 
 
@@ -25,13 +30,13 @@ CREATE TABLE "user_gallery" (
 );
 
 
-CREATE TABLE "sb_page" (
+CREATE TABLE "sb_pages" (
 	"id" SERIAL PRIMARY KEY,
 	"text" TEXT,
 	"img_x" DECIMAL(45,38),
 	"img_y" DECIMAL(45,38),
 	"img_width" DECIMAL(45,38),
 	"img_height" DECIMAL(45,38),
-	"user_gallery_id" INT REFERENCES "user_gallery" NOT NULL,
-	"post_id" INT REFERENCES "post" NOT NULL
+	"user_gallery_id" INT REFERENCES "user_gallery",
+	"storybook_id" INT REFERENCES "storybook" NOT NULL
 );
