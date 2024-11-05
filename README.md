@@ -24,10 +24,6 @@ My Storybook is a web application that transforms the way users create and share
   <a href="https://nodejs.org" target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="nodejs" width="40" height="40"/>
   </a>
-  <!-- Express -->
-  <a href="https://expressjs.com" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" alt="express" width="40" height="40"/>
-  </a>
   <!-- React -->
   <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="react" width="40" height="40"/>
@@ -56,28 +52,28 @@ My Storybook is a web application that transforms the way users create and share
 
 
 Login Page
-![LoginPage](documentation/images/documentation/images/loginPage.png)
+![LoginPage](documentation/images/loginPage.png)
 
 Home Page
-![HomePage](documentation/images/documentation/images/homePage.png)
-![HomePage2](documentation/images/documentation/images/homePage2.png)
-![HomePage3](documentation/images/documentation/images/homePage3.png)
+![HomePage](documentation/images/homePage.png)
+![HomePage2](documentation/images/homePage2.png)
+![HomePage3](documentation/images/homePage3.png)
 
 Creating Storybooks
-![Create](documentation/images/documentation/images/create.png)
-![Create2](documentation/images/documentation/images/create2.png)
-![Create3](documentation/images/documentation/images/create3.png)
+![Create](documentation/images/create.png)
+![Create2](documentation/images/create2.png)
+![Create3](documentation/images/create3.png)
 
 Uploading Photos
-![Upload](documentation/images/documentation/images/uploadPage.png)
-![Upload2](documentation/images/documentation/images/uploadPage2.png)
+![Upload](documentation/images/uploadPage.png)
+![Upload2](documentation/images/uploadPage2.png)
 
 Profile Page
-![Profile](documentation/images/documentation/images/profilePage.png)
+![Profile](documentation/images/profilePage.png)
 
 Fullscreen view of your storybook
-![Fullscreen](documentation/images/documentation/images/fullScreen.png)
-![Fullscreen2](documentation/images/documentation/images/fullScreen2.png)
+![Fullscreen](documentation/images/fullScreen.png)
+![Fullscreen2](documentation/images/fullScreen2.png)
 
 
 
