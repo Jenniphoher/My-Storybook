@@ -96,7 +96,7 @@ function App() {
           </Route>
           <Route exact path="/home">
             {user.id ?
-              <Redirect to="/home_page" /> : <LandingPage />
+              <Redirect to="/home_page" /> : <LoginPage />
             }
           </Route>
           {/* If none of the other routes matched, we will show a 404. */}
