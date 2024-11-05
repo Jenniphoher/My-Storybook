@@ -1,12 +1,94 @@
-# Prime Solo Project - Starting Repo
+# My Storybook
 
-This version uses React, Redux, Express, Passport, and PostgreSQL (a full list of dependencies can be found in `package.json`).
 
-We **STRONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+My Storybook is a web application that transforms the way users create and share digital stories. By combining the charm of traditional storybooks with modern digital tools, users can craft beautiful narratives page by page through uploading their own images and adding text. Whether you're a hobbyist writer, educator, or creative storyteller, My Storybook provides all the tools needed to bring your stories to life.
 
-## Use the Template for This Repository (Don't Clone)
 
-- Don't Fork or Clone. Instead, click the `Use this Template` button, and make a copy to your personal account. Make the project `PUBLIC`!
+# Built With
+
+
+<p align="left">
+  <!-- JavaScript -->
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
+  </a>
+  <!-- HTML -->
+  <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" alt="html5" width="40" height="40"/>
+  </a>
+  <!-- CSS -->
+  <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" alt="css3" width="40" height="40"/>
+  </a>
+  <!-- Node.js -->
+  <a href="https://nodejs.org" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="nodejs" width="40" height="40"/>
+  </a>
+  <!-- Express -->
+  <a href="https://expressjs.com" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" alt="express" width="40" height="40"/>
+  </a>
+  <!-- React -->
+  <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="react" width="40" height="40"/>
+  </a>
+  <!-- Redux -->
+  <a href="https://redux.js.org" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/>
+  </a>
+  <!-- PostgreSQL -->
+  <a href="https://www.postgresql.org" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" alt="postgresql" width="40" height="40"/>
+  </a>
+  <!-- Material-UI (MUI) -->
+  <a href="https://mui.com/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/materialui/materialui-original.svg" alt="materialui" width="40" height="40"/>
+  </a>
+</p>
+
+![Cloudinary](https://img.shields.io/badge/Cloudinary-4285F4.svg?style=for-the-badge&logo=cloudinary&logoColor=white)
+![Konva](https://img.shields.io/badge/Konva-0D83CD.svg?style=for-the-badge)
+
+- JavaScript, HTML, CSS, NodeJS, Express, React, Redux, Redux-Saga, PostgreSQL, Rest APIs, Cloudinary, Konva, MUI
+
+
+# Web Application
+
+
+Login Page
+![LoginPage](documentation/images/documentation/images/loginPage.png)
+
+Home Page
+![HomePage](documentation/images/documentation/images/homePage.png)
+![HomePage2](documentation/images/documentation/images/homePage2.png)
+![HomePage3](documentation/images/documentation/images/homePage3.png)
+
+Creating Storybooks
+![Create](documentation/images/documentation/images/create.png)
+![Create2](documentation/images/documentation/images/create2.png)
+![Create3](documentation/images/documentation/images/create3.png)
+
+Uploading Photos
+![Upload](documentation/images/documentation/images/uploadPage.png)
+![Upload2](documentation/images/documentation/images/uploadPage2.png)
+
+Profile Page
+![Profile](documentation/images/documentation/images/profilePage.png)
+
+Fullscreen view of your storybook
+![Fullscreen](documentation/images/documentation/images/fullScreen.png)
+![Fullscreen2](documentation/images/documentation/images/fullScreen2.png)
+
+
+
+
+
+
+<!-- # Getting Started
+
+
+This should be able to run in your preferred IDE. I used VS code for this project.
+
 
 ## Prerequisites
 
@@ -16,19 +98,58 @@ Before you get started, make sure you have the following software installed on y
 - [PostgreSQL](https://www.postgresql.org)
 - [Nodemon](https://nodemon.io)
 
+![Dependecies](documentation/images/documentation/images/dependeciesScreenshot.png)
+
 ## Create Database and Table
 
 Create a new database called `prime_app` and create a `user` table:
 
 ```SQL
 CREATE TABLE "user" (
-    "id" SERIAL PRIMARY KEY,
-    "username" VARCHAR (80) UNIQUE NOT NULL,
-    "password" VARCHAR (1000) NOT NULL
+	"id" SERIAL PRIMARY KEY,
+	"first_name" VARCHAR (250),
+	"last_name" VARCHAR (250),
+	"email" VARCHAR (250),
+	"username" VARCHAR (250),
+	"password" VARCHAR (250),
+	"profile_photo" VARCHAR (250),
+	"cover_photo" VARCHAR (250)
+);
+
+CREATE TABLE "logo" (
+	"id" SERIAL PRIMARY KEY,
+	"logo_img" VARCHAR (250)
+);
+
+
+CREATE TABLE "storybook" (
+	"id" SERIAL PRIMARY KEY,
+	"is_public" BOOLEAN DEFAULT FALSE,
+	"user_id" INT REFERENCES "user" NOT NULL
+);
+
+
+CREATE TABLE "user_gallery" (
+	"id" SERIAL PRIMARY KEY,
+	"title" VARCHAR (250),
+	"img_url" VARCHAR (250),
+	"user_id" INT REFERENCES "user" NOT NULL
+);
+
+
+CREATE TABLE "sb_pages" (
+	"id" SERIAL PRIMARY KEY,
+	"text" TEXT,
+	"img_x" DECIMAL(45,38),
+	"img_y" DECIMAL(45,38),
+	"img_width" DECIMAL(45,38),
+	"img_height" DECIMAL(45,38),
+	"user_gallery_id" INT REFERENCES "user_gallery",
+	"storybook_id" INT REFERENCES "storybook" NOT NULL
 );
 ```
 
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`.
+If you would like to name your database something else, you will need to change `storybook_proto` to the name of your new database name in `server/modules/pool.js`.
 
 ## Development Setup Instructions
 
@@ -101,9 +222,6 @@ This code is also heavily commented. We recommend reading through the comments, 
   - App/App
   - Footer/Footer
   - Nav/Nav
-  - AboutPage/AboutPage
-  - InfoPage/InfoPage
-  - UserPage/UserPage
   - LoginPage/LoginPage
   - RegisterPage/RegisterPage
   - LogOutButton/LogOutButton
@@ -121,4 +239,4 @@ This code is also heavily commented. We recommend reading through the comments, 
 
 ## Update Documentation
 
-Customize this ReadMe and the code comments in this project to read less like a starter repo and more like a project. Here is an example: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2.
+Customize this ReadMe and the code comments in this project to read less like a starter repo and more like a project. Here is an example: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2. -->
