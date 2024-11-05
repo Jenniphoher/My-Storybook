@@ -2,6 +2,7 @@ import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
 
+
 // ============= CREATE && FETCH GALLERY =============
 // ------- done fixing
 function* fetchGallery(action) {
