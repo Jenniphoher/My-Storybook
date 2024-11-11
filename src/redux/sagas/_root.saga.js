@@ -5,6 +5,7 @@ import userSaga from './user.saga';
 import gallerySaga from './gallery.saga';
 import pagesSaga from './pages.saga';
 import storybookSaga from './storybook.saga';
+import librarySaga from './library.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -20,6 +21,7 @@ export default function* rootSaga() {
     userSaga(),
     gallerySaga(),
     storybookSaga(),
-    pagesSaga()
+    pagesSaga(),
+    librarySaga()
   ]);
 }
