@@ -13,6 +13,7 @@ const galleryRouter = require('./routes/gallery.router');
 const uploadRouter = require('./routes/upload.router');
 const storybookRouter = require('./routes/storybook.router')
 const pagesRouter = require('./routes/pages.router')
+const libraryRouter = require('./routes/library.router')
 
 // Express Middleware
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use('/api/gallery', galleryRouter)
 app.use('/api/upload', uploadRouter)
 app.use('/api/storybook', storybookRouter)
 app.use('/api/pages', pagesRouter)
+app.use('/api/library', libraryRouter)
 
 // Listen Server & Port
 app.listen(PORT, () => {
