@@ -1,0 +1,15 @@
+.libraryGalleryPhotoDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.libraryGalleryPhoto {
+    width: 40%;
+}
+
+.libraryGalleryNextBtn, .libraryGalleryBackBtn {
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color:  rgb(209, 209, 209);
+}

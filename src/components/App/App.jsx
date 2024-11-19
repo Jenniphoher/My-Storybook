@@ -8,15 +8,9 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import ProtectedRoute from '../Boiler/ProtectedRoute/ProtectedRoute';
 import Nav from '../Nav/Nav';
 import Footer from '../Boiler/Footer/Footer';
-
-import ProtectedRoute from '../Boiler/ProtectedRoute/ProtectedRoute';
-
-import AboutPage from '../Boiler/AboutPage/AboutPage';
-import UserPage from '../Boiler/UserPage/UserPage';
-import InfoPage from '../Boiler/InfoPage/InfoPage';
-import LandingPage from '../Boiler/LandingPage/LandingPage';
 import LoginPage from '../Boiler/LoginPage/LoginPage';
 import RegisterPage from '../Boiler/RegisterPage/RegisterPage';
 import HomePage from '../HomePage/HomePage';
@@ -25,6 +19,7 @@ import ProfilePage from '../ProfilePage/ProfilePage';
 import ImagePage from '../ImagePage/ImagePage';
 import StoryFullScreen from '../StoryFullScreen/StoryFullScreen';
 import ProfileUserGallery from '../ProfilePage/ProfileUserGallery';
+import LibraryPage from '../LibraryPage/LibraryPage';
 
 import './App.css';
 
@@ -78,6 +73,10 @@ function App() {
 
           <ProtectedRoute exact path="/profile_cover/:id">
             <ProfileUserGallery />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/library_page">
+            <LibraryPage />
           </ProtectedRoute>
 
 
