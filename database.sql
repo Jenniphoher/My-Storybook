@@ -40,3 +40,14 @@ CREATE TABLE "sb_pages" (
 	"user_gallery_id" INT REFERENCES "user_gallery",
 	"storybook_id" INT REFERENCES "storybook" NOT NULL
 );
+
+CREATE TABLE "library_category" (
+	"id" SERIAL PRIMARY KEY,
+	"category" VARCHAR (250)
+);
+
+CREATE TABLE "library_gallery" (
+	"id" SERIAL PRIMARY KEY,
+	"image" VARCHAR (250),
+	"category_id" INT REFERENCES "library_category" NOT NULL
+);
