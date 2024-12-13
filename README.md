@@ -1,7 +1,7 @@
 # My Storybook
 
 
-My Storybook is a web application that transforms the way users create and share digital stories. By combining the charm of traditional storybooks with modern digital tools, users can craft beautiful narratives page by page through uploading their own images and adding text. Whether you're a hobbyist writer, educator, or creative storyteller, My Storybook provides all the tools needed to bring your stories to life.
+My Storybook is a web application that transforms the way users create and share digital stories. By combining the charm of traditional storybooks with modern digital tools, users can craft beautiful narratives page by page through uploading their own images and adding text. Whether you're a hobbyist writer, educator, or creative storyteller, My Storybook provides the tools needed to bring your stories to life.
 
 
 # Built With
